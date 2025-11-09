@@ -6,7 +6,7 @@ function App() {
 
   return (
     <>
- <h1 class="text-[hsl(var(--foreground))] text-3xl font-bold">Tailwind v4 Works!</h1>
+ <h1 class="dark container text-3xl font-bold">Tailwind v4 Works!</h1>
 
     </>
   )

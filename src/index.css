@@ -43,4 +43,20 @@
     --border: 0 0% 14.9%;
     --input: 0 0% 14.9%;
   }
+
+
+
+
+}
+
+  @layer utilities {
+  .container {
+    @apply mx-auto px-4;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    /* border-radius: var(--radius); */
+    border-color: hsl(var(--destructive));
+    border: 1px solid;
+
+  }
 }
