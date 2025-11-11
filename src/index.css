@@ -1,6 +1,16 @@
 @import "tailwindcss";
 
 
+
+.inconsolata-500 {
+  font-family: "Inconsolata", monospace;
+  font-optical-sizing: auto;
+  font-weight:500;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+}
+
 @layer base{
 :root {
     --background: 0 0% 100%;
@@ -61,11 +71,17 @@
   }
 
 
+  *{
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+    font-family: 'Inconsolata', monospace;  
+  }
+
+
   .card{
     background-color: hsl(var(--card));
     color: hsl(var(--card-foreground));
     border-radius: var(--radius);
-    padding: 1rem;
+    padding: 8px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
   }
 }
