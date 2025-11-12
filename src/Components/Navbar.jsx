@@ -16,7 +16,7 @@ export const Navbar = ()=>{
 
 
 
-       <div className="  flex  justify-center items-center gap-8">
+       <div className="flex flex-col md:flex-row  justify-center items-center gap-8">
             <div>How It Works?</div>
             <div>Benefits</div>
             <div className="  flex  justify-center items-center gap-4">
