@@ -16,6 +16,8 @@ return <div
         items-center justify-between p-4 bg-[hsl(var(--background))] text-[hsl(var(--foreground))]">
 
           <Navbar/>
+          
+     
 
 {/* Below is the main text and side image of gradient ??????????? */}
 
