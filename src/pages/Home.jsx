@@ -4,10 +4,14 @@ import { LucideClock, LucideLineChart, LucideTarget,LucideSparkles,LucideDownloa
 import { ContainerWithTitleAndIcon } from "../Components/ContainerWithTitleAndIcon";
 import { Navbar } from "../Components/Navbar"
 import frontBanner from '../assets/frontBanner.png';
-
+import FrontBanner from "../assets/frontBanner.svg?react";
+import FrontBannerDark from "../assets/frontBannerDark.svg?react";
+import { ThemeContext } from "../Providers/ThemeProvider";
+import { useContext } from "react";
 
 
 export const Home = () => {
+    const { darkTheme, toggleDarkTheme } = useContext(ThemeContext);
 
 return <div
   className="
@@ -27,8 +31,11 @@ return <div
                         <p  className="text-center text-2xl">Leverage the power of AI to generate a strategic roadmap tailored for your business.</p>
                         
                 </div>
+                
+                {darkTheme?<FrontBannerDark className="fill-[hsl(var(--foreground))] w-full md:w-7/16 mt-10 rounded-2xl shadow-gray-900 shadow-l"/>:<FrontBanner  className="fill-[hsl(var(--foreground))] w-full md:w-7/16 mt-10 rounded-2xl shadow-gray-900 shadow-l"/>}
+                {/* <img src={frontBanner} className=" w-full md:w-7/16 mt-10 rounded-2xl shadow-gray-900 shadow-l" /> */}
 
-                <img src={frontBanner} className=" w-full md:w-7/16 mt-10 rounded-2xl shadow-gray-900 shadow-l" />
+
 
                 </div>
 
