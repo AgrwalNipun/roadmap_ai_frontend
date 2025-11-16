@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { LucideEye, LucideEyeOff, LucideX } from "lucide-react";
 import { loginUser, signupUser } from "../apis/auth";
+import { UserContext } from "../Providers/UserProvider";
 
 export const Modal = ({ onClose, isLogin }) => {
 
@@ -8,8 +9,7 @@ export const Modal = ({ onClose, isLogin }) => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
-
+    const {user, setUser} = useContext(UserContext);
     useEffect(() => {
         const handleEsc = (e) => {
             if (e.key === "Escape") {
@@ -31,11 +31,22 @@ export const Modal = ({ onClose, isLogin }) => {
         >
             <form
 
-                onSubmit={(e) => {
+                onSubmit={async(e) => {
+
 
                     e.preventDefault();
-                    isLogin?loginUser(email, password):signupUser(name, email, password);
+
+
+                    ///// Make sure below function returns user
+                    const fetchedUser = await (isLogin?loginUser(email, password):signupUser(name, email, password));
                     // console.log(name, email, password);
+                    console.log("Fetched User:", fetchedUser);
+
+                    setUser(fetchedUser);
+                    // console.log("User set in context:", user);
+                    // useEffect(() => console.log(user), [user]);
+
+                    onClose();
                 }}
             >
 

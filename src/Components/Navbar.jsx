@@ -1,7 +1,8 @@
 import { LucideMenu } from "lucide-react"
 import { ThemeSwitcher } from "./ThemeSwitcher"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { Modal } from "./Modal";
+import { UserContext } from "../Providers/UserProvider";
 
 
 export const Navbar = () => {
@@ -10,6 +11,8 @@ export const Navbar = () => {
     const [showModal, setShowModal] = useState(false);
 
     const [isLogin,setLogin] = useState(false);
+
+    const {user} = useContext(UserContext);
 
 
     return <div className="mx-auto border-gray-900 border-b-1 flex items-center justify-between p-4 bg-[hsl(var(--background))] text-[hsl(var(--foreground))]">
@@ -20,10 +23,15 @@ export const Navbar = () => {
         <LucideMenu className="md:hidden w-8 h-8" onClick={()=>setShowMenu(!showMenu)}/>
                {showMenu && (
                 <div className="absolute top-16 right-4 bg-[hsl(var(--background))] p-4 rounded-xl shadow-md md:hidden flex flex-col justify-center items-center gap-4 z-50">
+                    
+                    
+                  { user ?"Welcome "+user.fullName: <div className="flex-col justify-center items-center gap-4 flex">
                     <div >How It Works?</div>
                     <div >Benefits</div>
                     <div onClick={()=>{setLogin(false);setShowModal(!showModal);}}  >Sign Up</div>
                     <div onClick={()=>{setLogin(true);setShowModal(!showModal)}}>Login</div>
+
+                </div>}
             <ThemeSwitcher />
 
                 </div>
@@ -31,6 +39,8 @@ export const Navbar = () => {
 
 
         <div className=" hidden md:flex  md:flex-row  justify-center items-center gap-8">
+           {user? "Welcome " + user.fullName  :  <div className="flex jhustify-center items-center gap-4">
+            
             <div>How It Works?</div>
             <div>Benefits</div>
             <div className="  flex  justify-center items-center gap-4">
@@ -42,6 +52,8 @@ export const Navbar = () => {
                     setShowModal(!showModal);}}>Login</button>
 
             </div>
+            
+            </div> }
 
             <ThemeSwitcher />
 

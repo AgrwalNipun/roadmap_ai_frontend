@@ -66,7 +66,7 @@ return <div
   {/* Step 1 */}
   <div className="flex flex-col items-center justify-start px-6 text-center md:w-1/3">
     <div className="bg-indigo-600 p-5 rounded-full mb-4">
-      <LucideTarget className="w-8 h-8" />
+      <LucideTarget className="w-8 h-8 " />
     </div>
     <p className="text-lg">1. Input Your Goals</p>
   </div>
