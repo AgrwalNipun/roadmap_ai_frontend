@@ -3,16 +3,15 @@ import { Navbar } from "../Components/Navbar";
 import { getAllRoadmap } from "../apis/dashboardApi";
 import ProgressBar from "../Components/ProgressBar";
 import { Link } from "react-router-dom";
+import { LucidePlayCircle } from "lucide-react";
 
 export const Dashboard = () => {
   const [data, setData] = useState(null);
 
   useEffect(() => {
     getAllRoadmap().then((res) => {
-      console.log("Dashboard Data:", res);
 
       setData(res);
-      console.log("Dashboard Data:", res);
     });
   }, []);
 
@@ -35,18 +34,29 @@ export const Dashboard = () => {
       {(!data) ? <div>Loading...</div> :
         <div>
           {data.roadmaps.map((item, index) => (
-            
+
             <Link key={index}
-              to={`/roadmap/${item.roadmap.id}`}>
+              to={`/roadmap/${item.roadmap.id}`}
+              state={{ item }}
+            >
               <div
                 style={{ border: "1px solid #ccc", padding: 10, margin: 10 }}
               >
-                <h3>{item.roadmap.title.toUpperCase()}</h3>
+                <div className="flex justify-between items-center ">
 
-                <p>
-                  Progress: {item.substepsCompleted} / {item.totalSubsteps}
-                </p>
+                  <div>
+                    <h3>{item.roadmap.title.toUpperCase()}</h3>
 
+                    <p>
+                      Progress: {item.substepsCompleted} / {item.totalSubsteps}
+                    </p>
+
+                  </div>
+                  <div>
+                    <LucidePlayCircle />
+                  </div>
+
+                </div>
                 <ProgressBar totalVal={item.totalSubsteps} currentVal={item.substepsCompleted} isCompleted={item.substepsCompleted / item.totalSubsteps == 1}></ProgressBar>
               </div>
             </Link>
