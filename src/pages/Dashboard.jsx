@@ -1,16 +1,57 @@
-import { Navbar } from "../Components/Navbar"
+import { useEffect, useState } from "react";
+import { Navbar } from "../Components/Navbar";
+import { getAllRoadmap } from "../apis/dashboardApi";
+import ProgressBar from "../Components/ProgressBar";
+import { Link } from "react-router-dom";
 
 export const Dashboard = () => {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    getAllRoadmap().then((res) => {
+      console.log("Dashboard Data:", res);
+
+      setData(res);
+      console.log("Dashboard Data:", res);
+    });
+  }, []);
 
 
 
-return <div>
+  return (
+    <div
+      className="
+        mx-auto
+        w-full md:w-3/4
+        items-center justify-between 
+        p-4 
+        bg-[hsl(var(--background))] 
+        text-[hsl(var(--foreground))]
+      "
+    >
+      <Navbar />
+      <h1 className="text-2xl p-4">Dashboard</h1>
 
-<Navbar/>
+      {(!data) ? <div>Loading...</div> :
+        <div>
+          {data.roadmaps.map((item, index) => (
+            
+            <Link key={index}
+              to={`/roadmap/${item.roadmap.id}`}>
+              <div
+                style={{ border: "1px solid #ccc", padding: 10, margin: 10 }}
+              >
+                <h3>{item.roadmap.title.toUpperCase()}</h3>
 
-Dashboard Page
+                <p>
+                  Progress: {item.substepsCompleted} / {item.totalSubsteps}
+                </p>
 
-</div>
-
-
-}
+                <ProgressBar totalVal={item.totalSubsteps} currentVal={item.substepsCompleted} isCompleted={item.substepsCompleted / item.totalSubsteps == 1}></ProgressBar>
+              </div>
+            </Link>
+          ))}
+        </div>}
+    </div>
+  );
+};

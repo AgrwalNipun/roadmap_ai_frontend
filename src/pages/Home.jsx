@@ -3,7 +3,6 @@
 import { LucideClock, LucideLineChart, LucideTarget,LucideSparkles,LucideDownload } from "lucide-react";
 import { ContainerWithTitleAndIcon } from "../Components/ContainerWithTitleAndIcon";
 import { Navbar } from "../Components/Navbar"
-import frontBanner from '../assets/frontBanner.png';
 import FrontBanner from "../assets/frontBanner.svg?react";
 import FrontBannerDark from "../assets/frontBannerDark.svg?react";
 import { ThemeContext } from "../Providers/ThemeProvider";
@@ -90,27 +89,6 @@ return <div
       </div>
 
 
-                    {/* <div className="flex flex-col md:flex-row items-center justify-between divide-x divide-gray-800 w-full">  
-                                <div className="p-5 flex flex-col justify-center items-center">
-                                    <LucideTarget className="w-12 h-12 mb-4 text-[hsl(var(--card))]"/>
-                                    <h3 className="text-2xl font-semibold mb-4 text-center">1</h3>
-                                    <h3 className="text-2xl font-semibold mb-4 text-center">Input Your Goals</h3>
-                                    
-                                </div>
-                                
-                                <div className="p-5 flex flex-col justify-center items-center">
-                                    <LucideTarget className="w-12 h-12 mb-4 text-[hsl(var(--card))]"/>
-                                    <h3 className="text-2xl font-semibold mb-4 text-center">2</h3>
-
-                                    <h3 className="text-2xl font-semibold mb-4 text-center">AI generates your <br></br>roadmap</h3>
-                                </div>
-
-                                <div className="p-5 flex flex-col justify-center items-center">
-                                    <LucideTarget className="w-12 h-12 mb-4 text-[hsl(var(--card))]"/>
-                                    <h3 className="text-2xl font-semibold mb-4 text-center">3</h3>
-
-                                    <h3 className="text-2xl font-semibold mb-4 text-center">Download</h3>
-                    </div> */}
-// </div>
+              
 
 }
