@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import { Navbar } from "../Components/Navbar";
 import { getAllRoadmap } from "../apis/dashboardApi";
 import ProgressBar from "../Components/ProgressBar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { LucidePlayCircle } from "lucide-react";
 
 export const Dashboard = () => {
+  const navigate = useNavigate();
   const [data, setData] = useState(null);
 
   useEffect(() => {
@@ -29,14 +30,28 @@ export const Dashboard = () => {
       "
     >
       <Navbar />
-      <h1 className="text-2xl p-4">Dashboard</h1>
+      {/* <h1 className="text-2xl p-4">Dashboard</h1> */}
+
+      <div className="flex justify-between items-center p-4">
+
+        <h1 className="text-2xl ">My Roadmaps</h1>
+        <div>
+          <button
+            onClick={() => navigate("/generate")}
+            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+            Generate New Roadmap
+          </button>
+        </div>
+
+
+      </div>
 
       {(!data) ? <div>Loading...</div> :
         <div>
           {data.roadmaps.map((item, index) => (
 
             <Link key={index}
-              to={`/roadmap/${item.roadmap.id}`}
+              to={`/roadmap/${item.id}`}
               state={{ item }}
             >
               <div
@@ -45,7 +60,7 @@ export const Dashboard = () => {
                 <div className="flex justify-between items-center ">
 
                   <div>
-                    <h3>{item.roadmap.title.toUpperCase()}</h3>
+                    <h3>{item.roadmapTitle.toUpperCase()}</h3>
 
                     <p>
                       Progress: {item.substepsCompleted} / {item.totalSubsteps}

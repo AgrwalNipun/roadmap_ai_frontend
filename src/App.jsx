@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { Home } from './pages/Home'
 import { Dashboard } from './pages/Dashboard'
 import { Roadmap } from './pages/Roadmap'
+import { Generate } from './pages/Generate'
 
 function App() {
   const { user } = useContext(UserContext);
@@ -38,6 +39,14 @@ function App() {
             path="/roadmap/:id"
             element={
               user ? <Roadmap /> : <Navigate to="/" replace />
+            }
+          />
+
+          {/* Generate Page (Protected) */}
+          <Route
+            path="/generate"
+            element={
+              user ? <Generate /> : <Navigate to="/" replace />
             }
           />
 
