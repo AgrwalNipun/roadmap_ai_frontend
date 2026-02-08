@@ -4,6 +4,8 @@ import { getAllRoadmap } from "../apis/dashboardApi";
 import ProgressBar from "../Components/ProgressBar";
 import { Link, useNavigate } from "react-router-dom";
 import { LucidePlayCircle } from "lucide-react";
+import { Loader } from "../Components/Loader";
+import { toast } from "react-hot-toast";
 
 export const Dashboard = () => {
   const navigate = useNavigate();
@@ -13,6 +15,9 @@ export const Dashboard = () => {
     getAllRoadmap().then((res) => {
 
       setData(res);
+    }).catch((err) => {
+      console.error(err);
+      toast.error("Failed to load roadmaps.");
     });
   }, []);
 
@@ -46,7 +51,17 @@ export const Dashboard = () => {
 
       </div>
 
-      {(!data) ? <div>Loading...</div> :
+      {(!data) ? <div className="flex h-[50vh] w-full justify-center items-center"><Loader /></div> :
+        (data.roadmaps && data.roadmaps.length === 0) ? (
+          <div className="flex flex-col items-center justify-center h-[50vh] gap-4">
+            <h2 className="text-xl text-gray-500">No roadmaps found. Create one to get started!</h2>
+             <button
+            onClick={() => navigate("/generate")}
+            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+            Create First Roadmap
+          </button>
+          </div>
+        ) :
         <div>
           {data.roadmaps.map((item, index) => (
 

@@ -1,7 +1,9 @@
 import { useContext } from 'react'
 import './App.css'
+import { Toaster } from 'react-hot-toast';
 import { UserContext } from './Providers/UserProvider'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { Loader } from "./Components/Loader";
 
 import { Home } from './pages/Home'
 import { Dashboard } from './pages/Dashboard'
@@ -9,10 +11,19 @@ import { Roadmap } from './pages/Roadmap'
 import { Generate } from './pages/Generate'
 
 function App() {
-  const { user } = useContext(UserContext);
+  const { user, loading } = useContext(UserContext);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-[hsl(var(--background))]">
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[hsl(var(--background))] text-[hsl(var(--foreground))]">
+      <Toaster position="bottom-right" />
       <BrowserRouter>
         <Routes>
 

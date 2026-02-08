@@ -1,5 +1,5 @@
 
-const BASE_URL = "http://localhost:8080/auth"
+const BASE_URL = "https://nipun-apis.online/auth"
 
 export async function loginUser(email,    password) {
 

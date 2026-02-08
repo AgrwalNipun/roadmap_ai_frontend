@@ -1,7 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import { LucideEye, LucideEyeOff, LucideX } from "lucide-react";
 import { loginUser, signupUser } from "../apis/auth";
+import { toast } from "react-hot-toast";
 import { UserContext } from "../Providers/UserProvider";
+import { Loader } from "./Loader";
 
 export const Modal = ({ onClose, isLogin }) => {
 
@@ -9,6 +11,7 @@ export const Modal = ({ onClose, isLogin }) => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
     const {user, setUser} = useContext(UserContext);
     useEffect(() => {
         const handleEsc = (e) => {
@@ -26,7 +29,7 @@ export const Modal = ({ onClose, isLogin }) => {
 
     return (
         <div
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[999]"
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
             onClick={onClose}
         >
             <form
@@ -35,18 +38,27 @@ export const Modal = ({ onClose, isLogin }) => {
 
 
                     e.preventDefault();
+                    setIsLoading(true);
 
+                    try {
+                        ///// Make sure below function returns user
+                        const fetchedUser = await (isLogin?loginUser(email, password):signupUser(name, email, password));
+                        // console.log(name, email, password);
+                        console.log("Fetched User:", fetchedUser);
 
-                    ///// Make sure below function returns user
-                    const fetchedUser = await (isLogin?loginUser(email, password):signupUser(name, email, password));
-                    // console.log(name, email, password);
-                    console.log("Fetched User:", fetchedUser);
+                        setUser(fetchedUser);
+                        // console.log("User set in context:", user);
+                        // useEffect(() => console.log(user), [user]);
 
-                    setUser(fetchedUser);
-                    // console.log("User set in context:", user);
-                    // useEffect(() => console.log(user), [user]);
-
-                    onClose();
+                        onClose();
+                        toast.success(`Successfully ${isLogin ? "Logged In" : "Signed Up"}!`);
+                    } catch (error) {
+                        console.error("Auth failed:", error);
+                        toast.error(error.message || "Authentication failed. Please try again.");
+                        // Optional: Show error to user
+                    } finally {
+                        setIsLoading(false);
+                    }
                 }}
             >
 
@@ -72,7 +84,8 @@ export const Modal = ({ onClose, isLogin }) => {
                                 <input
                                     onChange={(e) => setEmail(e.target.value)}
                                     type="email"
-                                    className="border-2 border-gray-700 rounded-lg p-2 bg-[hsl(var(--background))] focus:outline-none"
+                                    disabled={isLoading}
+                                    className="border-2 border-gray-700 rounded-lg p-2 bg-[hsl(var(--background))] focus:outline-none disabled:opacity-50"
                                 />
                             </div>
 
@@ -83,8 +96,9 @@ export const Modal = ({ onClose, isLogin }) => {
                                     <input
                                         onChange={(e) => setPassword(e.target.value)}
                                         type={showPassword ? "text" : "password"}
+                                        disabled={isLoading}
                                         className="border-2 border-gray-700 rounded-lg p-2 bg-[hsl(var(--background))] 
-                 focus:outline-none w-full pr-10"
+                 focus:outline-none w-full pr-10 disabled:opacity-50"
                                     />
 
                                     <button
@@ -99,8 +113,9 @@ export const Modal = ({ onClose, isLogin }) => {
                             </div>
 
                             <button type="submit"
-                                className="bg-blue-600 text-white rounded-lg py-2 font-semibold hover:bg-blue-700 transition">
-                                Login
+                                disabled={isLoading}
+                                className="bg-blue-600 text-white rounded-lg py-2 font-semibold hover:bg-blue-700 transition flex justify-center items-center disabled:opacity-70">
+                                {isLoading ? <Loader size={20} className="text-white" /> : "Login"}
                             </button>
 
                         </div>
@@ -112,7 +127,8 @@ export const Modal = ({ onClose, isLogin }) => {
                                 <input
                                     onChange={(e) => { setName(e.target.value) }}
                                     type="text"
-                                    className="border-2 border-gray-700 rounded-lg p-2 bg-[hsl(var(--background))] focus:outline-none"
+                                    disabled={isLoading}
+                                    className="border-2 border-gray-700 rounded-lg p-2 bg-[hsl(var(--background))] focus:outline-none disabled:opacity-50"
                                 />
                             </div>
 
@@ -121,7 +137,8 @@ export const Modal = ({ onClose, isLogin }) => {
                                 <input
                                     onChange={(e) => { setEmail(e.target.value) }}
                                     type="email"
-                                    className="border-2 border-gray-700 rounded-lg p-2 bg-[hsl(var(--background))] focus:outline-none"
+                                    disabled={isLoading}
+                                    className="border-2 border-gray-700 rounded-lg p-2 bg-[hsl(var(--background))] focus:outline-none disabled:opacity-50"
                                 />
                             </div>
 
@@ -132,8 +149,9 @@ export const Modal = ({ onClose, isLogin }) => {
                                     <input
                                         onChange={(e) => { setPassword(e.target.value) }}
                                         type={showPassword ? "text" : "password"}
+                                        disabled={isLoading}
                                         className="border-2 border-gray-700 rounded-lg p-2 bg-[hsl(var(--background))] 
-                 focus:outline-none w-full pr-10"
+                 focus:outline-none w-full pr-10 disabled:opacity-50"
                                     />
 
                                     <button
@@ -146,8 +164,10 @@ export const Modal = ({ onClose, isLogin }) => {
                                     </button>
                                 </div>
                             </div>
-                            <button type="submit" className="bg-green-600 text-white rounded-lg py-2 font-semibold hover:bg-green-700 transition">
-                                Sign Up
+                            <button type="submit" 
+                                disabled={isLoading}
+                                className="bg-green-600 text-white rounded-lg py-2 font-semibold hover:bg-green-700 transition flex justify-center items-center disabled:opacity-70">
+                                {isLoading ? <Loader size={20} className="text-white" /> : "Sign Up"}
                             </button>
 
                         </div>

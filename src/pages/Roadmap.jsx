@@ -4,6 +4,8 @@ import { getRoadmapById, updateSubstepStatus, downloadRoadmap } from "../apis/ro
 import { useEffect, useState, useRef } from "react";
 import { LucideChevronDown, LucideChevronUp, LucideFileText } from "lucide-react";
 import ProgressBar from "../Components/ProgressBar";
+import { Loader } from "../Components/Loader";
+import { toast } from "react-hot-toast";
 
 export const Roadmap = () => {
   const { id } = useParams();
@@ -12,6 +14,8 @@ export const Roadmap = () => {
   const [item, setItem] = useState(state?.item);
   const [substepsCount, setSubstepsCount] = useState(0);
   const [substepsCompleted, setSubstepsCompleted] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   const contentRefs = useRef({});
   const [openSteps, setOpenSteps] = useState([]);
@@ -35,7 +39,9 @@ export const Roadmap = () => {
 
 
   // Load roadmap
+  // Load roadmap
   useEffect(() => {
+    setLoading(true);
     getRoadmapById(id).then((res) => {
       let total = 0;
       let completed = 0;
@@ -48,6 +54,11 @@ export const Roadmap = () => {
       setSubstepsCount(total);
       setSubstepsCompleted(completed);
       setItem(res);
+      setLoading(false);
+    }).catch((err) => {
+      console.error(err);
+      toast.error("Failed to load roadmap details.");
+      setLoading(false);
     });
   }, [id]);
 
@@ -93,13 +104,23 @@ export const Roadmap = () => {
         </h1>
 
         <button
-        className="card flex gap-2 font-semibold"
-          onClick={() => {
+          className="card flex gap-2 font-semibold items-center"
+          disabled={isDownloading}
+          onClick={async () => {
             console.log("presses downlaod");
-            let resPDF = downloadRoadmap(item.id);
+            setIsDownloading(true);
+            try {
+              await downloadRoadmap(item.id);
+              toast.success("Download started!");
+            } catch (error) {
+              console.error("Download failed", error);
+              toast.error("Failed to download PDF.");
+            } finally {
+              setIsDownloading(false);
+            }
           }}
         >
-          Download PDF<LucideFileText/>
+          {isDownloading ? <Loader size={18} /> : <>Download PDF<LucideFileText/></>}
         </button>
 
       </div>
@@ -205,6 +226,12 @@ export const Roadmap = () => {
           </div>
         ))}
       </div>
+
+      {loading && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <Loader size={48} className="text-white" />
+        </div>
+      )}
 
     </div>
   );

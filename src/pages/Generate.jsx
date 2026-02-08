@@ -2,23 +2,31 @@ import { Navbar } from "../Components/Navbar";
 import { useState } from "react";
 import { generateRoadmap } from "../apis/roadmapApis";
 import { useNavigate } from "react-router-dom";
+import { Loader } from "../Components/Loader";
+import { toast } from "react-hot-toast";
+
 export const Generate = () => {
   const navigate = useNavigate();
   const [topic, setTopic] = useState("");
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const handleGenerate = async () => {
+    if (!topic.trim()) return;
+    setIsGenerating(true);
     console.log("Generating roadmap for:", topic);
     // TODO: Call API to generate roadmap
-    const res = await generateRoadmap(topic);
-    if (res) {
-
-      navigate("/roadmap/"+res?.id);
-
+    try {
+      const res = await generateRoadmap(topic);
+      if (res) {
+        navigate("/roadmap/"+res?.id);
+      }
+      console.log(res);
+    } catch (error) {
+       console.error(error);
+       toast.error("Failed to generate roadmap. Please try again.");
+    } finally {
+       setIsGenerating(false);
     }
-    
-    console.log(res);
-    
-    
   };
 
   return (
@@ -40,9 +48,10 @@ export const Generate = () => {
             />
             <button
               onClick={handleGenerate}
-              className="bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] px-6 py-3 rounded-lg font-medium hover:opacity-90 transition-opacity"
+              disabled={isGenerating}
+              className="bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] px-6 py-3 rounded-lg font-medium hover:opacity-90 transition-opacity flex items-center gap-2"
             >
-              Generate
+              {isGenerating ? <Loader size={20} className="text-[hsl(var(--primary-foreground))]" /> : "Generate"}
             </button>
           </div>
         </div>

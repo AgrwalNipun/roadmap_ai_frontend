@@ -5,6 +5,7 @@ export const UserContext = createContext();
 export const UserProvider = ({ children }) => {
 
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   // Load user on first render
   useEffect(() => {
@@ -12,11 +13,11 @@ export const UserProvider = ({ children }) => {
     if (storedUser) {try {
       
       setUser(JSON.parse(storedUser));
-      console.log("User loaded from localStorage:", JSON.parse(storedUser));
     } catch (error) {
       console.error("Failed to parse user from localStorage:", error);
     }
     }
+    setLoading(false);
   }, []);
 
   // Save user to localStorage when it changes
@@ -32,7 +33,7 @@ export const UserProvider = ({ children }) => {
   }, [user]);
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser, loading }}>
       {children}
     </UserContext.Provider>
   );
